@@ -1,16 +1,16 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Figure2_14and2_15.m%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%          本文件绘制论文图2.13至2.14                                            %
+%%%%%%%%%%%%%%%%%%%%%%%%% Figure2_9and2_10and2_11.m%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%          本文件绘制论文图2.9至2.11                                            %
 %          作者：余道洪                                                        %
-%          修改日期：2023.4.12                                                 %
+%          修改日期：2023.4.28                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear;clc;
 parameterLoadForchapter2_4
 j = 1;
-Ln1 = 0;
-Lns = [20e-3,30e-3,40e-3];
-for i = 1:3
-    Ln = Lns(i)
-    simOut = sim('chapter2_4_1.slx');
+N2 = 0;
+A_set = [3e-4,2.75e-4,2.5e-4];
+for N1 = 6:8
+    A = A_set(N1-5);
+    simOut = sim('chapter2_4.slx');
     P1_2DoF(:,j) = simOut.P1_2DoF.Data;
     P2_2DoF(:,j) = simOut.P2_2DoF.Data;
     P1_CPLT(:,j) = simOut.P1_CPLT.Data;
@@ -21,102 +21,116 @@ for i = 1:3
     j = j+1;
 end
 t = simOut.Zb.Time;
-h1 = figure(3)
+%% 图2.9
+h1 = figure()
 for i = 1:3 
 colorset= [242 121 112;50 184 151;199 109 162] /255;
 linetype = {'-','--',':'};
 Lwidth = [1.5 2 2];
 subplot(223)
 plot(t(400:600),P2_2DoF(400:600,i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
-xlim([0.55 0.6])
-Title = ['二自由度两轴车模型擦伤激励下'];
-title(Title,'FontSize',18)
+Title = ['二自由度两轴车模型多边形激励下'];
 subtitle('2位轮对轮轨力','FontSize',18)
+title(Title,'FontSize',18)
+xlim([0.4 0.6])
 xlabel('时间(s)','FontSize',18)
 ylabel('动态附加力(N)','FontSize',18)
 hold on 
-legend('20mm','30mm','40mm')
+legend('6阶','7阶','8阶')
+set(gca,'FontSize',14);
 prettyAxes().gbase()
-set(gca,'FontSize',14)
 
 subplot(224)
 plot(t(400:600),P2_CPLT(400:600,i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
-xlim([0.55 0.6])
-Title = ['单节车辆垂向振动擦伤激励下'];
+Title = ['单节车辆垂向振动多边形激励下'];
 title(Title,'FontSize',18)
 subtitle('2位轮对轮轨力','FontSize',18)
+xlim([0.4 0.6])
 xlabel('时间(s)','FontSize',18)
 ylabel('动态附加力(N)','FontSize',18)
 hold on 
-legend('20mm','30mm','40mm')
+legend('6阶','7阶','8阶')
+set(gca,'FontSize',14);
 prettyAxes().gbase()
-set(gca,'FontSize',14)
 
 subplot(221)
 plot(t(400:600),P1_2DoF(400:600,i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
-xlim([0.55 0.6])
-Title = ['二自由度两轴车模型擦伤激励下'];
+Title = ['二自由度两轴车模型多边形激励下'];
 title(Title,'FontSize',18)
 subtitle('1位轮对轮轨力','FontSize',18)
+xlim([0.4 0.6])
 xlabel('时间(s)','FontSize',18)
 ylabel('动态附加力(N)','FontSize',18)
 hold on 
-legend('20mm','30mm','40mm')
+legend('6阶','7阶','8阶')
+set(gca,'FontSize',14);
 prettyAxes().gbase()
-set(gca,'FontSize',14)
 
 subplot(222)
 plot(t(400:600),P1_CPLT(400:600,i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
-xlim([0.55 0.6])
-Title = ['单节车辆垂向振动擦伤激励下'];
+Title = ['单节车辆垂向振动多边形激励下'];
 title(Title,'FontSize',18)
 subtitle('1位轮对轮轨力','FontSize',18)
+xlim([0.4 0.6])
 xlabel('时间(s)','FontSize',18)
 ylabel('动态附加力(N)','FontSize',18)
 hold on 
-legend('20mm','30mm','40mm')
+legend('6阶','7阶','8阶')
+set(gca,'FontSize',14);
 prettyAxes().gbase()
-set(gca,'FontSize',14)
 end
+
 set(h1,'position',[150,100,1050,650]);
-h2 = figure(4)
+%% 图2.10
+h2 = figure()
+plot(t(400:500),P1_2DoF(400:500,1),'Color',[142 207 201]/255,'LineWidth',3)
+hold on 
+plot(t(400:500),P1_CPLT(400:500,1),'--','Color',[250 127 111]/255,'LineWidth',1.5)
+xlim([0.4 0.44])
+xlabel('时间(s)','FontSize',18)
+ylabel('动态附加力(N)','FontSize',18)
+legend('二自由度模型','单节车模型','FontSize',16)
+prettyAxes().gbase()
+set(gca,'FontSize',18)
+set(h2,'position',[150,100,550,450]);
+%% 图2.11
+h3=figure()
 for i = 1 :3
 
     subplot(311)
-    plot(t(400:600),Fc1((400:600),i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
-    Title = ['单节车辆垂向振动模型擦伤激励下前悬挂阻尼力'];
+    plot(t(400:600),Fc1(400:600,i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
+    Title = ['单节车辆垂向振动模型多边形激励下前悬挂阻尼力'];
     title(Title,'FontSize',18)
+    xlim([0.4 0.6])
     xlabel('时间(s)','FontSize',18)
     ylabel('前悬挂阻尼力(N)','FontSize',18)
-    set(gca,'FontSize',14)
     hold on
+    set(gca,'FontSize',14);
+    legend('6阶','7阶','8阶')
     prettyAxes().gbase()
-    xlim([0.54 0.6])
-    legend('20mm','30mm','40mm')
+
     subplot(312)
-    plot(t((400:600)),Fc2((400:600),i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
-    Title = ['单节车辆垂向振动模型擦伤激励下后悬挂阻尼力'];
+    plot(t(400:600),Fc2(400:600,i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
+    Title = ['单节车辆垂向振动模型多边形激励下后悬挂阻尼力'];
     title(Title,'FontSize',18)
+    xlim([0.4 0.6])
     xlabel('时间(s)','FontSize',18)
     ylabel('后悬挂阻尼力(N)','FontSize',18)
-    legend('20mm','30mm','40mm')
-    set(gca,'FontSize',14)
+    legend('6阶','7阶','8阶')
     hold on 
-    xlim([0.54 0.6])
+    set(gca,'FontSize',14);
     prettyAxes().gbase()
-
 
     subplot(313)
-    plot(t((400:600)),Zb((400:600),i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
-    Title = ['单节车辆垂向振动模型擦伤激励下车体垂向位移'];
+    plot(t(400:600),Zb(400:600,i),linetype{i},'Color',colorset(i,:),'LineWidth',Lwidth(i))
+    Title = ['单节车辆垂向振动模型多边形激励下车体垂向位移'];
     title(Title,'FontSize',18)
+    xlim([0.4 0.6])
     xlabel('时间(s)','FontSize',18)
     ylabel('车体垂向位移(m)','FontSize',18)
-    legend('20mm','30mm','40mm')
+    legend('6阶','7阶','8阶')
     hold on
-    set(gca,'FontSize',14)
-    xlim([0.54 0.6])
+    set(gca,'FontSize',14);
     prettyAxes().gbase()
-
 end
-set(h2,'position',[500,25,850,750]);
+set(h3,'position',[500,25,850,750]);
